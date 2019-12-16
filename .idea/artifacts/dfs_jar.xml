@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="dfs:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/dfs_jar</output-path>
+    <root id="archive" name="dfs.jar">
+      <element id="module-output" name="dfs" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/sangupta/murmur/1.0.0/murmur-1.0.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/io/netty/netty-all/4.1.39.Final/netty-all-4.1.39.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.1/gson-2.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.9.1/protobuf-java-3.9.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

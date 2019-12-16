@@ -1,0 +1,174 @@
+syntax = "proto3";
+option java_package = "edu.usfca.cs.dfs";
+
+
+
+message StoreChunk {
+    string fileName = 1;
+    int32 chunkId = 2;
+    //checksum bytes?
+    int32 chunkSize = 3;
+    string chunkName = 4;
+    bytes data = 5;
+}
+
+//Gets the number of chunks for a filename
+message GetNumberOfChunks {
+    string fileName = 1;
+}
+
+//Get the location of a chunk?
+message GetChunkLocation {
+    string fileName = 1;
+    int32 chunkId = 2;
+}
+
+//Retrieve a specific chunk
+message RetrieveChunk {
+    string filename = 1;
+    string chunkName = 2;
+
+}
+
+
+message ListChunksAndFileNames {
+
+}
+
+message ListReplicasAndChunks {
+
+}
+
+message ListReplicasAndChunksResponse {
+    map<int32, ChunkNames> replicasToChunkNames = 1;
+}
+
+//Responds with the number of chunks for a filename
+message GetNumberOfChunksResponse {
+    bool success = 1;
+    int32 totalChunks = 2;
+}
+
+//?
+message GetChunkLocationResponse {
+
+}
+
+//A single response of a chunk
+message RetrieveChunkResponse {
+    string chunkName = 1;
+    int32 chunkSize = 2;
+    int32 chunkId = 3;
+    bytes data = 4;
+    string filename = 5;
+}
+
+//a list of chunks
+message RetrieveChunks {
+    repeated RetrieveChunkResponse retrieveChunks = 1;
+}
+
+message ChunkNames {
+    repeated string chunkNames = 1;
+}
+
+//A map of filenames to list of chunks
+message ListChunksAndFilenamesResponse {
+    map<string, ChunkNames> fileNameToChunks = 1;
+}
+
+
+message StorageNode {
+    string ip = 1;
+    int32 port = 2;
+    int32 id = 3;
+}
+
+message StorageNodes {
+    repeated StorageNode nodeList = 1;
+}
+
+message ChunkInfo {
+    string chunkName = 1;
+    int32 chunkId = 2;
+    int32 chunkSize = 3;
+}
+
+//To controller
+message AssignStorageNodesRequest {
+    string fileName = 1;
+    int32 fileSize = 2;
+    repeated ChunkInfo chunks = 3; //filename_chunkId, chunkSize
+}
+
+
+message AssignStorageNodesResponse {
+    string fileName = 1;
+    int32 fileSize = 2;
+    map<string, StorageNodes> chunksToReplicas = 3;
+}
+
+
+message StoreChunkRequest {
+    StoreChunk chunk = 1;
+    StorageNodes nodes = 2;
+}
+
+
+message StoreChunkResponse {
+    bool success = 1;
+}
+
+
+message RetrieveFileLocationRequest {
+    string fileName = 1;
+    repeated ChunkInfo chunks = 2;
+}
+
+message RetrieveFileLocationResponse {
+    string fileName = 1;
+    //this maps chunks to possible replicas
+    map<string, StorageNodes> chunksToReplicas = 2;
+}
+
+
+message HeartBeat {
+    string ip = 1;
+    int32 port = 2;
+    double freeSpace = 3;
+    int32 processedRequests = 4;
+    int32 id = 5;
+}
+
+message GetActiveNodes {
+    map<int32, HeartBeat> activeNodes = 1;
+}
+
+
+
+message StorageMessageWrapper {
+    oneof msg {
+        StoreChunk storeChunkMsg = 1;
+        StorageNode storageNode = 2;
+        StorageNodes storageNodes = 3;
+        AssignStorageNodesRequest asnRequest = 4;
+        AssignStorageNodesResponse asnResponse = 5;
+        StoreChunkRequest scRequest = 6;
+        StoreChunkResponse scResponse = 7;
+        RetrieveFileLocationRequest rflRequest = 8;
+        RetrieveFileLocationResponse rflResponse = 9;
+        HeartBeat heartBeat = 10;
+        GetNumberOfChunks getNumberOfChunks = 11;
+        GetChunkLocation getChunkLocation = 12;
+        RetrieveChunk retrieveChunk = 13;
+        ListChunksAndFileNames listChunksAndFileNames = 14;
+        ChunkInfo chunkInfo = 15;
+        GetNumberOfChunksResponse getNumberOfChunksResponse = 16;
+        GetChunkLocationResponse getChunksLocationsResponse = 17;
+        RetrieveChunkResponse retrieveChunkResponse = 18;
+        RetrieveChunks retrieveChunks = 19;
+        ListChunksAndFilenamesResponse listAllChunksAndFilenames = 20;
+        GetActiveNodes activeNodes = 21;
+        ListReplicasAndChunks listReplicasAndChunks = 22;
+    }
+}
